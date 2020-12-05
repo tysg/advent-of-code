@@ -1,20 +1,5 @@
 use std::fs;
 
-fn next(
-    (x, y): (usize, usize),
-    dx: usize,
-    dy: usize,
-    width: usize,
-    height: usize,
-) -> Option<(usize, usize)> {
-    let ny = y + dy;
-    if ny >= height {
-        return None;
-    }
-
-    Some(((x + dx) % width, ny))
-}
-
 #[derive(Debug)]
 struct Game<'a> {
     map: &'a Vec<Vec<u8>>,
@@ -37,7 +22,7 @@ pub fn solve(filename: &str) {
     };
 
     let policies = [(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)];
-    let product: u64= policies
+    let product: u64 = policies
         .iter()
         .map(|(dx, dy)| count_policy_hits(*dx, *dy, &game))
         .filter(|n| n != &0)
@@ -46,7 +31,7 @@ pub fn solve(filename: &str) {
     println!("{}", product);
 }
 
-fn count_policy_hits(dx: usize, dy: usize, game: &Game) -> u64{
+fn count_policy_hits(dx: usize, dy: usize, game: &Game) -> u64 {
     let mut pos = (0, 0);
     let mut count = 0;
 
@@ -59,4 +44,19 @@ fn count_policy_hits(dx: usize, dy: usize, game: &Game) -> u64{
     }
 
     count
+}
+
+fn next(
+    (x, y): (usize, usize),
+    dx: usize,
+    dy: usize,
+    width: usize,
+    height: usize,
+) -> Option<(usize, usize)> {
+    let ny = y + dy;
+    if ny >= height {
+        return None;
+    }
+
+    Some(((x + dx) % width, ny))
 }
