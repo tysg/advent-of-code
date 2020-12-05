@@ -2,6 +2,7 @@ use std::env;
 mod day_1;
 mod day_2;
 mod day_3;
+mod day_4;
 mod util;
 
 fn main() {
@@ -11,6 +12,7 @@ fn main() {
         1 => day_1::solve(&args[2]),
         2 => day_2::solve(&args[2]),
         3 => day_3::solve(&args[2]),
+        4 => day_4::solve(&args[2]),
         _ => println!("wrong day_number!"),
     }
 }
