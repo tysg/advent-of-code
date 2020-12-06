@@ -1,6 +1,5 @@
 use lazy_static::lazy_static;
 use regex::Regex;
-use std::fs;
 
 #[derive(Debug)]
 enum LengthUnit {
@@ -123,8 +122,7 @@ fn rule_north_pole(x: &Passport) -> bool {
         && x.pid.is_some()
 }
 
-pub fn solve(filename: &str) {
-    let content = fs::read_to_string(filename).expect("Something wrong reading file");
+pub fn solve(content: String) {
     let valid_passports = content
         .split("\n\n")
         .map(Passport::from)

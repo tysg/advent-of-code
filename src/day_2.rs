@@ -1,9 +1,7 @@
 use regex::Regex;
-use std::fs;
 use crate::util::parse_int;
 
-pub fn solve(filename: &str) {
-    let content = fs::read_to_string(filename).expect("Something wrong reading file");
+pub fn solve(content: String) {
     let mut counter = 0;
     let re = Regex::new(r"(\d+)-(\d+) ([a-z]): ([a-z]+)").unwrap();
     for line in content.lines() {

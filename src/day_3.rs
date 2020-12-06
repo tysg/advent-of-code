@@ -1,5 +1,3 @@
-use std::fs;
-
 #[derive(Debug)]
 struct Game<'a> {
     map: &'a Vec<Vec<u8>>,
@@ -7,10 +5,8 @@ struct Game<'a> {
     height: usize,
 }
 
-pub fn solve(filename: &str) {
-    let map = fs::read_to_string(filename)
-        .expect("Something wrong reading file")
-        .lines()
+pub fn solve(input: String) {
+    let map = input.lines()
         .filter(|l| !l.is_empty())
         .map(|l| l.bytes().collect::<Vec<u8>>())
         .collect::<Vec<Vec<u8>>>();

@@ -1,8 +1,6 @@
 use std::collections::HashMap;
-use std::fs;
 
-pub fn solve(filename: &str) {
-    let content = fs::read_to_string(filename).expect("Something wrong reading file");
+pub fn solve(content: String) {
     let numbers: Vec<u32> = content
         .split_whitespace()
         .map(|num| num.parse::<u32>().unwrap())
