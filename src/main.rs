@@ -5,6 +5,7 @@ mod day_2;
 mod day_3;
 mod day_4;
 mod day_5;
+mod day_6;
 mod util;
 
 fn read_file(filename: &str) -> String {
@@ -31,12 +32,15 @@ fn main() {
         read_file(&args[2])
     };
 
+    let input = input.trim();
+
     match day_number {
         1 => day_1::solve(input),
         2 => day_2::solve(input),
         3 => day_3::solve(input),
         4 => day_4::solve(input),
         5 => day_5::solve(input),
+        6 => day_6::solve(input),
         _ => println!("wrong day_number!"),
     }
 }

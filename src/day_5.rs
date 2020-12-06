@@ -1,4 +1,4 @@
-pub fn solve(input: String) {
+pub fn solve(input: &str) {
     let mut ids = input
         .lines()
         .map(process_boarding_pass)

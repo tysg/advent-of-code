@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-pub fn solve(content: String) {
+pub fn solve(content: &str) {
     let numbers: Vec<u32> = content
         .split_whitespace()
         .map(|num| num.parse::<u32>().unwrap())

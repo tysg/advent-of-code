@@ -122,7 +122,7 @@ fn rule_north_pole(x: &Passport) -> bool {
         && x.pid.is_some()
 }
 
-pub fn solve(content: String) {
+pub fn solve(content: &str) {
     let valid_passports = content
         .split("\n\n")
         .map(Passport::from)

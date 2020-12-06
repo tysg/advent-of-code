@@ -1,7 +1,7 @@
 use regex::Regex;
 use crate::util::parse_int;
 
-pub fn solve(content: String) {
+pub fn solve(content: &str) {
     let mut counter = 0;
     let re = Regex::new(r"(\d+)-(\d+) ([a-z]): ([a-z]+)").unwrap();
     for line in content.lines() {
