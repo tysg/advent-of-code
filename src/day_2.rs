@@ -1,5 +1,5 @@
-use regex::Regex;
 use crate::util::parse_int;
+use regex::Regex;
 
 pub fn solve(content: &str) {
     let mut counter = 0;
@@ -38,4 +38,3 @@ fn check_follow_real_policy(first_pos: u32, second_pos: u32, c: char, candidate:
 
     (first_char == c) ^ (second_char == c)
 }
-

@@ -6,7 +6,8 @@ struct Game<'a> {
 }
 
 pub fn solve(input: &str) {
-    let map = input.lines()
+    let map = input
+        .lines()
         .filter(|l| !l.is_empty())
         .map(|l| l.bytes().collect::<Vec<u8>>())
         .collect::<Vec<Vec<u8>>>();
