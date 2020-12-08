@@ -3,11 +3,8 @@ type Rule = (String, Vec<(String, u32)>);
 
 struct BagsGraph<'a> {
     g: Vec<Vec<u32>>,
-    m: HashMap<&'a str, usize>
+    m: HashMap<&'a str, usize>,
 }
-    
-
-
 
 pub fn solve(input: &str) {
     let rules = parse(input);
@@ -32,7 +29,7 @@ pub fn solve(input: &str) {
 
     let graph = BagsGraph {
         g: g,
-        m: bags_index
+        m: bags_index,
     };
 
     let init = graph.m.get("shiny gold").unwrap();
@@ -44,7 +41,7 @@ pub fn solve(input: &str) {
     println!("{}", num_of_required_bags);
 }
 
-fn count_total_required_bags(g: &BagsGraph, color_index: usize) -> u64{
+fn count_total_required_bags(g: &BagsGraph, color_index: usize) -> u64 {
     let mut count: u64 = 1; // including this bag
 
     for (i, child) in g.g[color_index].iter().enumerate() {
@@ -65,7 +62,6 @@ fn count_colors(g: &BagsGraph, init_index: usize) -> u32 {
     let mut visited = vec![false; len];
 
     while let Some(node) = q.pop_front() {
-
         for i in 0..len {
             if g.g[i][node] != 0 && !visited[i] {
                 visited[i] = true;
@@ -73,7 +69,6 @@ fn count_colors(g: &BagsGraph, init_index: usize) -> u32 {
             }
         }
     }
-
 
     visited.iter().filter(|x| **x).count() as u32
 }
@@ -93,7 +88,6 @@ fn parse_rule(l: &str) -> Rule {
 
     it.next(); // "bag contains"
     it.next();
-        
 
     while let Some(n) = it.next() {
         if n == "no" {
@@ -101,7 +95,7 @@ fn parse_rule(l: &str) -> Rule {
             it.next();
             continue;
         }
-        
+
         let num = n.parse::<u32>().unwrap();
         let mut color = String::new();
         color.push_str(it.next().unwrap());
@@ -110,8 +104,8 @@ fn parse_rule(l: &str) -> Rule {
 
         children.push((color, num));
 
-        if let Some(c) = it.next(){
-            if c.as_bytes()[c.len()-1] == '.' as u8 {
+        if let Some(c) = it.next() {
+            if c.as_bytes()[c.len() - 1] == '.' as u8 {
                 break;
             }
         }
