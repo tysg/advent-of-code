@@ -16,3 +16,9 @@ codegen-units = 1
 [dependencies]
 regex = "1"
 lazy_static = "1.4.0"
+
+[dependencies.nom]
+version = "6"
+features = ["alloc"]
+
+

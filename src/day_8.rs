@@ -28,7 +28,6 @@ pub fn solve(input: &str) {
         Some(res) => println!("{}", res),
         None => println!("not found"),
     }
-    
 }
 
 fn try_fix_instructions(instr: &mut Vec<Op>) -> Option<i32> {
@@ -39,7 +38,7 @@ fn try_fix_instructions(instr: &mut Vec<Op>) -> Option<i32> {
         match &instr[i] {
             Op::Nop(n) => instr[i] = Op::Jmp(*n),
             Op::Jmp(n) => instr[i] = Op::Nop(*n),
-            _ => ()
+            _ => (),
         }
 
         if let Ok(result) = run(&instr) {

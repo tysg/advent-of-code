@@ -1,3 +1,5 @@
+mod parser;
+
 use std::collections::{HashMap, VecDeque};
 type Rule = (String, Vec<(String, u32)>);
 
@@ -8,6 +10,7 @@ struct BagsGraph<'a> {
 
 pub fn solve(input: &str) {
     let rules = parse(input);
+    println!("{:?}", rules);
 
     let bags_index: HashMap<&str, usize> = rules
         .iter()
@@ -74,10 +77,10 @@ fn count_colors(g: &BagsGraph, init_index: usize) -> u32 {
 }
 
 fn parse(input: &str) -> Vec<Rule> {
-    input.lines().map(parse_rule).collect()
+    input.lines().map(crate::day_7::parser::parse).collect()
 }
 
-fn parse_rule(l: &str) -> Rule {
+fn _parse_rule(l: &str) -> Rule {
     let mut it = l.split_whitespace();
     let mut parent = String::new();
     let mut children = Vec::new();

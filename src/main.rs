@@ -10,11 +10,11 @@ mod day_7;
 mod day_8;
 mod util;
 
-fn read_file(filename: &str) -> Result<String, io::Error>{
+fn read_file(filename: &str) -> Result<String, io::Error> {
     fs::read_to_string(filename)
 }
 
-fn read_stdin() -> Result<String,io::Error>{
+fn read_stdin() -> Result<String, io::Error> {
     let mut out = String::new();
     io::stdin().read_to_string(&mut out)?;
     Ok(out)
@@ -24,17 +24,16 @@ fn main() {
     let args: Vec<String> = env::args().collect();
     if args.len() < 2 {
         eprintln!("Not enough parameters");
-        return 
+        return;
     }
 
     let day_number: u32 = match args[1].parse() {
         Ok(n) => n,
         Err(err) => {
             eprintln!("{}", err);
-            return
+            return;
         }
     };
-
 
     let is_reading_stdin = args.len() == 2;
 
@@ -48,12 +47,11 @@ fn main() {
         Ok(s) => s,
         Err(err) => {
             eprintln!("{}", err);
-            return
+            return;
         }
     };
 
     let input = input.trim();
-
 
     match day_number {
         1 => day_1::solve(input),
