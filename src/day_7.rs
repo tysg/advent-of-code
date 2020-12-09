@@ -10,7 +10,6 @@ struct BagsGraph<'a> {
 
 pub fn solve(input: &str) {
     let rules = parse(input);
-    println!("{:?}", rules);
 
     let bags_index: HashMap<&str, usize> = rules
         .iter()
