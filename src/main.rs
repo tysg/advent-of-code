@@ -10,6 +10,7 @@ mod day_7;
 mod day_8;
 mod day_9;
 mod day_10;
+mod day_11;
 mod util;
 
 fn read_file(filename: &str) -> Result<String, io::Error> {
@@ -66,6 +67,7 @@ fn main() {
         8 => day_8::solve(input),
         9 => day_9::solve(input),
         10 => day_10::solve(input),
+        11 => day_11::solve(input),
         _ => println!("wrong day_number!"),
     }
 }
