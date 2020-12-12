@@ -1,5 +1,5 @@
-use std::collections::HashSet;
 use std::cmp;
+use std::collections::HashSet;
 pub fn solve(input: &str) {
     let arr = input
         .lines()
@@ -9,7 +9,7 @@ pub fn solve(input: &str) {
     let wrong_num = find_wrong_num(&arr).unwrap();
     let weakness = find_encryption_weakness(&arr, wrong_num).unwrap();
 
-    println!("Wrong num is: {}; Weakness is: {}", wrong_num, weakness );
+    println!("Wrong num is: {}; Weakness is: {}", wrong_num, weakness);
 }
 
 fn find_encryption_weakness(arr: &Vec<i64>, target: i64) -> Option<i64> {
@@ -23,13 +23,12 @@ fn find_encryption_weakness(arr: &Vec<i64>, target: i64) -> Option<i64> {
             left += 1;
         }
         if sum == target && left != right {
-            return Some(max_min_sum(&arr[left..=right]))
+            return Some(max_min_sum(&arr[left..=right]));
         }
     }
 
     None
 }
-
 
 fn max_min_sum(arr: &[i64]) -> i64 {
     let mut max = 0;
@@ -48,9 +47,9 @@ fn find_wrong_num(arr: &Vec<i64>) -> Option<i64> {
 
     for i in windows_size..arr.len() {
         if let None = s.iter().find(|n| s.contains(&(&arr[i] - **n))) {
-            return Some(arr[i])
+            return Some(arr[i]);
         }
-        s.remove(&arr[i-windows_size]);
+        s.remove(&arr[i - windows_size]);
         s.insert(&arr[i]);
     }
     None
