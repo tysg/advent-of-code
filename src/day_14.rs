@@ -1,27 +1,26 @@
 use lazy_static::lazy_static;
 use regex::Regex;
-use std::collections::HashMap;
+use std::collections::{HashMap, VecDeque};
 
 #[derive(Debug, PartialEq)]
 enum Instr {
-    Mask(u64, u64),
-    Write(usize, u64),
+    // Mask(u64, u64),
+    Write(u64, u64),
+    MaskV2(String),
 }
 
 pub fn solve(input: &str) {
     let mut mem = HashMap::new();
-    let mut and_mask = 0;
-    let mut or_mask = 0;
+    let mut masks = VecDeque::new();
 
-    input.lines().map(parse_instruction).for_each(|i| {
-        match i {
-            Instr::Mask(and, or) => {
-                and_mask = and;
-                or_mask = or;
-            }
-            Instr::Write(loc, n) => {
-                mem.insert(loc, n & and_mask ^ or_mask);
-            }
+    input.lines().map(parse_instruction).for_each(|i| match i {
+        Instr::MaskV2(s) => {
+            masks = get_masks(&s);
+        }
+        Instr::Write(loc, n) => {
+            &masks.iter().cloned().for_each(|m| {
+                mem.insert(loc ^ m, n);
+            });
         }
     });
 
@@ -32,7 +31,7 @@ pub fn solve(input: &str) {
 fn parse_instruction(input: &str) -> Instr {
     match &input[0..3] {
         "mem" => parse_write(input),
-        "mas" => parse_mask(input),
+        "mas" => parse_mask_v2(input),
         _ => panic!("unexpected token"),
     }
 }
@@ -43,43 +42,66 @@ fn parse_write(input: &str) -> Instr {
     }
 
     let caps = RE.captures(input).unwrap();
-    let loc = caps.get(1).unwrap().as_str().parse::<usize>().unwrap();
+    let loc = caps.get(1).unwrap().as_str().parse::<u64>().unwrap();
     let content = caps.get(2).unwrap().as_str().parse::<u64>().unwrap();
 
     Instr::Write(loc, content)
 }
 
-fn parse_mask(input: &str) -> Instr {
-    let mut and_mask = 0;
-    let mut or_mask = 0;
-    let mask = &input[7..];
-    let mut it = mask.chars();
-    for _ in 0..mask.len() {
-        and_mask = and_mask << 1;
-        or_mask = or_mask << 1;
-        match it.next().unwrap() {
-            '0' => {}
+fn get_masks(mask: &str) -> VecDeque<u64> {
+    let mut q = VecDeque::new();
+    q.push_back(0);
+
+    for c in mask.chars() {
+        match c {
+            '0' => {
+                for _ in 0..q.len() {
+                    let n = q.pop_front().unwrap();
+                    q.push_back(n << 1);
+                }
+            }
             '1' => {
-                or_mask = or_mask ^ 1;
+                for _ in 0..q.len() {
+                    let n = q.pop_front().unwrap();
+                    q.push_back((n << 1) ^ 1);
+                }
             }
             'X' => {
-                and_mask = and_mask ^ 1;
+                for _ in 0..q.len() {
+                    let n = q.pop_front().unwrap();
+                    q.push_back(n << 1);
+                    q.push_back((n << 1) ^ 1);
+                }
             }
-            _ => (),
+            _ => ()
         }
     }
-    Instr::Mask(and_mask, or_mask)
+    q
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn parse_mask_1() {
-        let ms = "mask = 01X01111101010010X01101X0110101111X0";
-        let and = 0b001000000000000001000001000000000010;
-        let or = 0b010011111010100100011010011010111100;
-        assert_eq!(parse_mask(ms), Instr::Mask(and, or));
-    }
+fn parse_mask_v2(input: &str) -> Instr {
+    Instr::MaskV2(input[7..].to_string())
 }
+
+// fn _parse_mask(input: &str) -> Instr {
+//     let mut and_mask = 0;
+//     let mut or_mask = 0;
+//     let mask = &input[7..];
+//     let mut it = mask.chars();
+//     for _ in 0..mask.len() {
+//         and_mask = and_mask << 1;
+//         or_mask = or_mask << 1;
+//         match it.next().unwrap() {
+//             '0' => {}
+//             '1' => {
+//                 or_mask = or_mask ^ 1;
+//             }
+//             'X' => {
+//                 and_mask = and_mask ^ 1;
+//             }
+//             _ => (),
+//         }
+//     }
+//     Instr::Mask(and_mask, or_mask)
+// }
+
