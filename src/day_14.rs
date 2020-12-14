@@ -141,14 +141,14 @@ fn parse_mask(mask: &str) -> Instr {
         and_mask = and_mask << 1;
         or_mask = or_mask << 1;
         match it.next().unwrap() {
-            '0' => {}
+            '0' => (),
             '1' => {
                 or_mask = or_mask | 1;
             }
             'X' => {
                 and_mask = and_mask | 1;
             }
-            _ => (),
+            _ => panic!("unexpected token"),
         }
     }
     Instr::Mask(and_mask, or_mask)
