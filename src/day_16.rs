@@ -12,13 +12,20 @@ struct Range {
 pub fn solve(input: &str) {
     let mut it = input.split("\n\n");
 
-    let ranges = it.next().unwrap();
-    let mut my_ticket = it.next().unwrap().lines().skip(1);
-    let nearby_tickets = it.next().unwrap().lines().skip(1);
-
-    let ranges = ranges.lines().map(parse_range).collect::<Vec<_>>();
-    let my_ticket = parse_ticket(my_ticket.next().unwrap());
-    let nearby_tickets = nearby_tickets.map(parse_ticket).collect::<Vec<_>>();
+    let ranges = it
+        .next()
+        .unwrap()
+        .lines()
+        .map(parse_range)
+        .collect::<Vec<_>>();
+    let my_ticket = parse_ticket(it.next().unwrap().lines().skip(1).next().unwrap());
+    let nearby_tickets = it
+        .next()
+        .unwrap()
+        .lines()
+        .skip(1)
+        .map(parse_ticket)
+        .collect::<Vec<_>>();
 
     // part 1
     let scanning_error_rate = get_scanning_error_rate(&nearby_tickets, &ranges);
@@ -35,7 +42,8 @@ pub fn solve(input: &str) {
         })
         .collect::<Vec<_>>();
     let len = ranges.len();
-    assert_eq!(ranges.len(), my_ticket.len());
+
+    // represents the set of possible fields at this position
     let mut domains = vec![(0..len).collect::<HashSet<_>>(); len];
 
     for ticket in nearby_tickets {
@@ -46,12 +54,6 @@ pub fn solve(input: &str) {
                 }
             }
         }
-
-        // check if we reached desired state
-        if domains.iter().all(|s| s.len() == 1) {
-            println!("We entered the desired state");
-            break;
-        }
     }
 
     let assignment = assign(&domains);
@@ -60,8 +62,8 @@ pub fn solve(input: &str) {
         .map(|n| assignment.iter().enumerate().find(|t| t.1 == &n).unwrap().0)
         .map(|id| my_ticket[id])
         .product();
-    println!("{:?}", assignment);
 
+    println!("{:?}", assignment);
     println!("{}", my_multiplication);
 }
 
