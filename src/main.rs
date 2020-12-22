@@ -10,6 +10,7 @@ mod day_15;
 mod day_16;
 mod day_17;
 mod day_18a;
+mod day_19;
 mod day_2;
 mod day_3;
 mod day_4;
@@ -83,6 +84,7 @@ fn main() {
         16 => day_16::solve(input),
         17 => day_17::solve(input),
         18 => day_18a::solve(input),
+        19 => day_19::solve(input),
         _ => println!("wrong day_number!"),
     }
 }
