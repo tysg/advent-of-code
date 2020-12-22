@@ -12,10 +12,51 @@ pub fn solve(input: &str) {
         .map(parse_rule)
         .collect::<HashMap<usize, Rule>>();
     let part_1_regex = add_full_match_carets(get_regex(0, &rules));
-    // println!("{}", part_1_regex);
     let pattern = Regex::new(part_1_regex.as_str()).unwrap();
     let count = input[1].lines().filter(|l| pattern.is_match(l)).count();
     println!("{}", count);
+
+    // part 2: https://github.com/Lakret/aoc2020/blob/master/src/d19.rs#L3-L147
+    let rule42_non_capturing = get_regex(42, &rules);
+    let capturing_rule42 = format!("({})", &rule42_non_capturing);
+    let rule42 = Regex::new(&capturing_rule42).unwrap();
+    let rule31_non_capturing = get_regex(31, &rules);
+    let capturing_rule31 = format!("({})", &rule31_non_capturing);
+    let rule31 = Regex::new(&capturing_rule31).unwrap();
+    let starts_42_ends_31 = format!(
+        r"^(?P<start_42>(?:{})+)(?P<end_31>(?:{})+)$",
+        rule42_non_capturing, rule31_non_capturing
+    );
+    let start_and_end31 = Regex::new(&starts_42_ends_31).unwrap();
+    let matching = input[1]
+        .lines()
+        .filter(|message| matches_new_rules(&start_and_end31, &rule31, &rule42, message))
+        .count();
+    println!("{}", matching);
+}
+
+// https://github.com/Lakret/aoc2020/blob/master/src/d19.rs#L3-L147
+fn matches_new_rules(
+    starts_42_ends_31: &Regex,
+    rule31: &Regex,
+    rule42: &Regex,
+    message: &str,
+) -> bool {
+    if starts_42_ends_31.is_match(message) {
+        let capture = starts_42_ends_31.captures_iter(message).collect::<Vec<_>>();
+
+        if capture.len() == 1 {
+            let capture = capture.first().unwrap();
+            let count_31 = rule31.find_iter(&capture["end_31"]).count();
+            let count_42 = rule42.find_iter(&capture["start_42"]).count();
+
+            count_42 >= count_31 + 1
+        } else {
+            false
+        }
+    } else {
+        false
+    }
 }
 
 fn add_full_match_carets(pat: String) -> String {
@@ -46,7 +87,7 @@ fn get_regex(i: usize, m: &HashMap<usize, Rule>) -> String {
                     acc.push('|');
                     acc
                 })
-                .trim_end_matches("|") // due to fold, use `fold_first` when it stablises
+                .trim_end_matches("|") // remove due to fold; use `fold_first` when it stablises
                 .to_string();
             res.push(')');
             res
