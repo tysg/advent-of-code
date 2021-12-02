@@ -1,8 +1,7 @@
 (ns advent-of-code.day-1
   (:require [clojure.string :as string]))
 
-(defn parse-int-series
-  [input]
+(defn parse-int-series [input]
   (map #(Integer/parseInt %)
        (string/split input #"\n")))
 
