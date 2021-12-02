@@ -1,5 +1,4 @@
 (ns advent-of-code.core
-  (:require [clojure.string :as str])
   (:gen-class))
 
 (defn -main
