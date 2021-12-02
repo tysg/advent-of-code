@@ -7,9 +7,5 @@
   [& args]
   (println "Hello, World!"))
 
-(defn parse-int-series
-  [input]
-  (map #(Integer/parseInt %)
-       (str/split input #"\n")))
 
 

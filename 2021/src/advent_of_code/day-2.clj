@@ -2,7 +2,6 @@
   (:require
    [clojure.string :as string]))
 
-
 (defn parse-line [line]
   (let [[direc dist] (string/split line #" ")]
     [(keyword direc) (Integer/parseInt dist)]))
