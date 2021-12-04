@@ -34,8 +34,8 @@
            :winning-moves winning-moves 
            :grids next-grids 
            :moves (rest moves)}
-          {:winning-grids (cons (first wins) winning-grids)
-           :winning-moves (cons (first moves) winning-moves)
+          {:winning-grids (conj winning-grids (first wins))
+           :winning-moves (conj winning-moves (first moves))
            :grids next-grids
            :moves (rest moves)})))))
 
@@ -51,5 +51,5 @@
              (drop-while #((complement empty?) (:grids %)))
              first)]
     (*
-     (first (:winning-moves winning))
-     (sum-unmarked (first (:winning-grids winning))))))
+     (peek (:winning-moves winning))
+     (sum-unmarked (peek (:winning-grids winning))))))
