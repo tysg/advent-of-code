@@ -17,3 +17,4 @@
   ;; (count-increase series) ; part 1: 1557
   (count-increase (into-three-measurement-window series)) ; part 2: 1608
   )
+
