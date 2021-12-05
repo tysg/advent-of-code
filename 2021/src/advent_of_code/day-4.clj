@@ -15,29 +15,23 @@
   (let [idx (.indexOf grid val)]
     (if (neg? idx)
       grid
-      (update grid (.indexOf grid val) #(- % 100)))))
+      (update grid idx #(- % 100)))))
 
 (defn pivot-by [pred coll]
   (let [result (group-by pred coll)]
     (vector (get result true []) (get result false []))))
 
-(defn sum-unmarked [grid]
-  (reduce + (filter pos? grid)))
+(defn sum-unmarked [grid] (reduce + (filter pos? grid)))
 
 (defn move [state]
   (let [{:keys [winning-grids winning-moves grids moves]} state]
     (if (or (empty? grids) (empty? moves))
       state
       (let [[wins next-grids] (pivot-by win? (map #(move-grid % (first moves)) grids))]
-        (if (empty? wins)
-          {:winning-grids winning-grids 
-           :winning-moves winning-moves 
-           :grids next-grids 
-           :moves (rest moves)}
-          {:winning-grids (conj winning-grids (first wins))
-           :winning-moves (conj winning-moves (first moves))
-           :grids next-grids
-           :moves (rest moves)})))))
+        {:winning-grids (if (empty? wins) winning-grids (conj winning-grids (first wins))) 
+         :winning-moves (if (empty? wins) winning-grids (conj winning-moves (first moves))) 
+         :grids next-grids 
+         :moves (rest moves)}))))
 
 (let [input (slurp "resources/day4.in")
       lines (string/split input #"\n\n")
@@ -47,6 +41,7 @@
   (let [winning
         (->> {:winning-grids [] :winning-moves [] :grids grids :moves moves}
              (iterate move)
+             (take 1000)
              ;; (drop-while #(empty? (:winning-grids %)))
              (drop-while #((complement empty?) (:grids %)))
              first)]
