@@ -7,7 +7,8 @@
 
 (def input (slurp "resources/day6.in"))
 
-(defn parse-input [input] (string/split (string/trim input) #","))
+(defn parse-input [input] 
+  (frequencies (map #(Integer/parseInt %) (string/split (string/trim input) #","))))
 
 (defn next-timer [timer] (if (pos? timer) (dec timer) 6))
 
@@ -24,14 +25,11 @@
 (defn process 
   ([] (process example))
   ([input] (->> (parse-input input)
-            (map #(Integer/parseInt %))
-            frequencies
-            (iterate next-day)
-            (drop 256)
-            first
-            vals
-            (reduce +)
-            )))
+                (iterate next-day)
+                (drop 256)
+                first
+                vals
+                (reduce +))))
 
 (comment
   (next-day {7 1, 1 2, 0 3, 6 1, 8 1})
