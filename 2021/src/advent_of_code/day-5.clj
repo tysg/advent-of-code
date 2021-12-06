@@ -1,7 +1,8 @@
 (ns advent-of-code.day-5
   (:require
    [clojure.string :as string]
-   [clojure.set :as set]))
+   [clojure.set :as set]
+   [clojure.test :refer :all]))
 
 (def example 
 "0,9 -> 5,9
@@ -50,9 +51,12 @@
        first
        count))
 
+(deftest test-gen-points
+  (is (gen-points [[0 3] [3 0]]) '([0 3] [1 2] [2 1] [3 0])))
+
+
 (comment 
-  (gen-points [[0 8] [8 0]])
-  (gen-points [[8 0] [0 8]])
+  (gen-points [[3 0] [0 3]])
   (gen-points [[1 1] [4 4]])
   (gen-points [[1 1] [1 4]])
 )
