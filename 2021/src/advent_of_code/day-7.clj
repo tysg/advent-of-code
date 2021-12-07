@@ -9,19 +9,20 @@
 (defn parse-input [input] 
   (map #(Integer/parseInt %) (string/split (string/trim input) #"," )))
 
-(defn fuel-use [positions target]
-  (reduce + (map #(Math/abs (- % target)) positions)))
+(defn euclidean-dist [a b] (Math/abs (- a b))) 
 
 (defn summation [n] (/ (* n (inc n)) 2)) 
 
-(defn fuel-use-new [positions target]
-  (reduce + (map #(summation (Math/abs (- % target))) positions)))
+(defn summation-dist [a b] (summation (euclidean-dist a b)))
+
+(defn fuel-use [positions target metric] 
+  (reduce + (map #(metric target %) positions)))
 
 (defn solve 
   ([] (solve example))
   ([input] 
    (let [numbers (parse-input input)]
-     (apply min (map #(fuel-use-new numbers %) (range (apply min numbers) (inc (apply max numbers))))))))
+     (apply min (map #(fuel-use numbers % summation-dist) (range (apply min numbers) (inc (apply max numbers))))))))
 
 (comment
-  (solve input))
+  (time (solve input)))
