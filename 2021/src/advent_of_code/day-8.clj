@@ -2,7 +2,8 @@
   (:require
    [clojure.string :as string]
    [clojure.set :as set]
-   [clojure.math.combinatorics :as combo]))
+   [clojure.math.combinatorics :as combo]
+   [clojure.test :refer [is run-tests]]))
 
 
 (def example 
@@ -57,34 +58,33 @@ gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce
  #{\a \b \c \d \f \g} \9
  })
 
-
-(defn char-map [permutation] (zipmap segments permutation))
-
 (defn valid-digit? [word] (boolean (segments->digit word)))
 
 (defn replace-word [mapping word] (into #{} (replace mapping word)))
 
 (defn valid-mappings 
   [words] 
-  (for [mapping (map char-map (combo/permutations segments))
+  (for [mapping (map #(zipmap segments %) (combo/permutations segments))
         :let [replaced (for [w words] (replace-word mapping w))]
         :when (every? valid-digit? replaced)]
     mapping))
 
-(defn output-value [words mapping]
+(defn output-value 
+  {:test #(is (= (output-value '((\a \c \f)) {\a \a \c \c \f \f}) 7))}
+  [words mapping]
   (->> (for [w words] (segments->digit (replace-word mapping w)))
        (take-last 4)
        (string/join)
        (Long/parseLong)))
 
-(output-value '((\a \c \f)) {\a \a \c \c \f \f})
 
-(let [lines (->> input string/trim string/split-lines)
+(let [lines (->> example string/trim string/split-lines)
       wordss (map parse-line lines)]
-  (reduce
-   +
-   (for [w wordss] (output-value w (first (valid-mappings w))))))
+  (->> wordss
+       (map (fn [words]
+              (output-value words (first (valid-mappings words)))))
+       (reduce +)))
    
-
+(run-tests)
 
 
