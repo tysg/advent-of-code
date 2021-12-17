@@ -22,12 +22,11 @@
 (defn idx-into [width [r c]] (+ c (* r width)))
 
 (defn inc-number [n x] 
-  (loop [n n x x]
-    (if (zero? n) 
-      x
-      (if (= x 9) 
-        (recur (dec n) 1)
-        (recur (dec n) (inc x))))))
+  (if (zero? n) 
+    x
+    (if (= x 9) 
+      (recur (dec n) 1)
+      (recur (dec n) (inc x)))))
 
 
 
