@@ -109,21 +109,6 @@ off x=-93533..-4276,y=-16170..68771,z=-104985..-24507")
                   [action (vec (first coords)) (vec (second coords)) (vec (nth coords 2))]))]
     (map instr (string/split-lines lines))))
 
-
-
-(defn part-1 [instrs]
-  (reduce
-   (fn [[xs ys zs] [action [x1 x2] [y1 y2] [z1 z2]]]
-     (let [xs' (range x1 (inc x2))
-           ys' (range y1 (inc y2))
-           zs' (range z1 (inc z2))]
-       (case action
-         :on [(apply conj xs xs')(apply conj ys ys')(apply conj zs zs')]
-         :off [(apply disj xs xs')(apply disj ys ys')(apply disj zs zs')])))
-   [#{} #{} #{}]
-   instrs))
-
-
 ;; 1) [0 4] [1 2] => ([0 0] [3 4]) [1 3]
 ;; 3) [0 2] [1 3] => ([0 0]) [1 2]
 ;; 2) [1 3] [0 4] => () [1 3]
@@ -174,20 +159,10 @@ off x=-93533..-4276,y=-16170..68771,z=-104985..-24507")
        [x-all y-all z-all] (mapv :all axis-res)
        [x-left y-left z-left] (mapv :left axis-res)]
    
-   ;; (for [x x-all
-   ;;       y y-all
-   ;;       z z-all
-   ;;       :when (not (and (x-intersect x) (y-intersect y) (z-intersect z)))]
-   ;;   [x y z])
    (concat
     (for [x x-all y y-left z z-all] [x y z])
     (for [x x-left y y-intersect z z-all] [x y z])
-    (for [x x-intersect y y-intersect z z-left] [x y z]))
-   
-   ;; (vec (concat (combo/cartesian-product x-all y-left z-all)
-   ;;                 (combo/cartesian-product x-left y-intersect z-all)
-   ;;                 (combo/cartesian-product x-intersect y-intersect z-left)))
-   ))
+    (for [x x-intersect y y-intersect z z-left] [x y z]))))
 
 (space-disjoin [[0 1] [0 1] [0 1]] [[2 2] [2 2] [0 2]])
 
