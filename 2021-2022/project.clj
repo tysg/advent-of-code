@@ -8,6 +8,7 @@
                  [org.clojure/tools.trace "0.7.11"]
                  [org.clojure/data.priority-map "1.1.0"]
                  [com.clojure-goes-fast/clj-async-profiler "0.5.1"]
+                 [org.clojure/core.match "1.0.0"]
 ]
 
 
