@@ -1,0 +1,5 @@
+(library
+ (name advent_of_code)
+ (libraries containers re)
+ (flags
+  (:standard -warn-error -unused-open)))
