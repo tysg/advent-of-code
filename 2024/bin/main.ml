@@ -8,7 +8,10 @@ let () =
       let input = In_channel.(with_open_bin file input_all) in
       let lines = String.split_on_char '\n' (String.trim input) in
       let output =
-        match day with "1" -> Day1.solve lines | _ -> failwith "Unknown day"
+        match day with
+        | "1" -> Day1.solve lines
+        | "5" -> Day5.solve lines
+        | _ -> failwith "Unknown day"
       in
       print_int output;
       print_newline ()
