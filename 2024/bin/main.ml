@@ -11,6 +11,7 @@ let () =
         match day with
         | "1" -> Day1.solve lines
         | "5" -> Day5.solve lines
+        | "6" -> Day6.solve lines
         | _ -> failwith "Unknown day"
       in
       print_int output;
