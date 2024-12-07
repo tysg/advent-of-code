@@ -64,7 +64,7 @@ let solve lines =
             | Some pos' ->
                 if Hashtbl.mem tbl pos' then true
                 else (
-                  Hashtbl.replace tbl pos' ();
+                  Hashtbl.replace tbl pos ();
                   loop tbl pos')
           in
           let tbl = Hashtbl.create 16 in
