@@ -18,17 +18,17 @@ let solve lines =
              (fun a b ->
                if a = b then []
                else
-                 let an, am = a in
-                 let bn, bm = b in
+                 let (an, am), (bn, bm) = (a, b) in
                  let dn, dm = (an - bn, am - bm) in
-                 let _part1 = [ (an + dn, am + dm); (bn - dn, bm - dm) ] in
-                 let f = gcd dn dm in
-                 let dn, dm = (dn / f, dm / f) in
-
-                 init len (fun i -> (an + ((i + 1) * dn), am + ((i + 1) * dm)))
-                 @ init len (fun i ->
-                       (bn - ((i + 1) * dn), bm - ((i + 1) * dm))))
-             pos pos
-           |> flatten
-           |> filter (fun (n, m) -> n >= 0 && n < len && m >= 0 && m < len))
-    |> sort_uniq ~cmp:Pos.compare |> length)
+                 let _part1 = [ (an + dn, am + dm) ] in
+                 let part2 =
+                   let f = gcd (abs dn) (abs dm) in
+                   let dn, dm = (dn / f, dm / f) in
+                   init len (fun i ->
+                       (bn + ((i + 1) * dn), bm + ((i + 1) * dm)))
+                 in
+                 part2
+                 |> filter (fun (n, m) ->
+                        n >= 0 && n < len && m >= 0 && m < len))
+             pos pos)
+    |> flatten |> sort_uniq ~cmp:Pos.compare |> length)
