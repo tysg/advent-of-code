@@ -1,22 +1,13 @@
-let pos arr =
-  match
-    arr
-    |> Array.map (Array.find_index (( = ) `W))
-    |> CCArray.find_idx Option.is_some
-  with
-  | Some (n, Some m) -> (n, m)
-  | _ -> failwith ""
+open Util
 
 let parse lines =
-  lines
-  |> List.map (fun s ->
-         Array.init (String.length s) (fun idx ->
-             match String.get s idx with
-             | '.' -> `D
-             | '#' -> `H
-             | '^' -> `W
-             | _ -> failwith "invalid"))
-  |> Array.of_list
+  Grid.(
+    of_lines lines
+    |> map (function
+         | '.' -> `D
+         | '#' -> `H
+         | '^' -> `W
+         | _ -> failwith "invalid"))
 
 let next grid ((n, m), (dn, dm)) =
   let len = Array.length grid in
@@ -38,7 +29,7 @@ let next grid ((n, m), (dn, dm)) =
 
 let solve1 lines =
   let grid = parse lines in
-  let pos = pos grid in
+  let pos = Grid.indexof `W grid |> List.hd in
   let rec loop trail (pos, d) =
     match next grid (pos, d) with
     | None -> pos :: trail
@@ -50,7 +41,7 @@ let solve1 lines =
 let solve lines =
   let grid = parse lines in
   let len = Array.length grid in
-  let pos = pos grid in
+  let pos = Grid.indexof `W grid |> List.hd in
   let idxs = CCList.(product CCPair.make (0 --^ len) (0 --^ len)) in
   List.fold_left
     (fun cnt (i, j) ->

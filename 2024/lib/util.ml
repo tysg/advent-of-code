@@ -1,9 +1,25 @@
-let dbg ?__POS__ fmt =
-  let k =
-    Format.fprintf Format.err_formatter
-      ("%s: " ^^ fmt ^^ "\n%!")
-      (match __POS__ with
-      | None -> ""
-      | Some (file, lnum, _, _) -> Printf.sprintf "[%s:%d] " file lnum)
-  in
-  k
+module Pos = struct
+  type t = int * int
+
+  let compare = CCPair.compare Int.compare Int.compare
+  let show (a, b) = Printf.sprintf "%d,%d" a b
+end
+
+module Grid = struct
+  type 'a t = 'a array array
+
+  let indexof x g =
+    let res = ref [] in
+    Array.iteri
+      (fun n row ->
+        Array.iteri (fun m c -> if x = c then res := (n, m) :: !res) row)
+      g;
+    !res
+
+  let of_lines l =
+    l
+    |> List.map (fun s -> Array.init (String.length s) (String.get s))
+    |> Array.of_list
+
+  let map f g = Array.map (fun row -> Array.map f row) g
+end
