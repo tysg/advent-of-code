@@ -22,4 +22,7 @@ module Grid = struct
     |> Array.of_list
 
   let map f g = Array.map (fun row -> Array.map f row) g
+
+  let show show_c g =
+    CCArray.to_string (CCArray.to_string show_c ~sep:" ") ~sep:"\n" g
 end
