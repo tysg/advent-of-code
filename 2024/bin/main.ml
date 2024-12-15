@@ -17,6 +17,7 @@ let () =
         | "9" -> Day9.solve lines
         | "10" -> Day10.solve lines
         | "11" -> Day11.solve lines
+        | "12" -> Day12.solve lines
         | _ -> failwith "Unknown day"
       in
       print_int output;

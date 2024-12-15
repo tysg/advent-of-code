@@ -8,6 +8,8 @@ end
 module Grid = struct
   type 'a t = 'a array array
 
+  let dirs = [ (0, 1); (1, 0); (0, -1); (-1, 0) ]
+
   let indexof x g =
     let res = ref [] in
     Array.iteri
@@ -26,3 +28,5 @@ module Grid = struct
   let show show_c g =
     CCArray.to_string (CCArray.to_string show_c ~sep:" ") ~sep:"\n" g
 end
+
+let printfn x = Printf.ksprintf print_endline x

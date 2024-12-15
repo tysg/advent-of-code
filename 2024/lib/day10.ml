@@ -1,7 +1,5 @@
 open Util
 
-let dirs = [ (0, 1); (1, 0); (0, -1); (-1, 0) ]
-
 let trails g start =
   let len = Array.length g in
   let rec traverse expected_level frontier =
@@ -16,7 +14,8 @@ let trails g start =
     | _ ->
         let frontier' =
           CCList.flat_map
-            (fun (n, m) -> List.map (fun (dn, dm) -> (dn + n, dm + m)) dirs)
+            (fun (n, m) ->
+              List.map (fun (dn, dm) -> (dn + n, dm + m)) Grid.dirs)
             valid_frontier
         in
         traverse (expected_level + 1) frontier'
@@ -30,7 +29,7 @@ let rating g start =
     | 9 -> 1
     | _ ->
         let frontier =
-          List.map (fun (dn, dm) -> (dn + n, dm + m)) dirs
+          List.map (fun (dn, dm) -> (dn + n, dm + m)) Grid.dirs
           |> List.filter (fun (n, m) ->
                  n >= 0 && n < len && m >= 0 && m < len
                  && g.(n).(m) = expected_level + 1)
